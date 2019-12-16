@@ -1,6 +1,9 @@
 # ppokemonsay
+
 Performant-Pokémon!
-pokemonsay
+
+> Lovingly forked from <https://github.com/possatti/pokemonsay>
+
 ==========
 
 ![You should try pokemonsay!](example.png)
