@@ -61,8 +61,7 @@ if [ -n "$I_CHOOSE" ]; then
 elif [ -n "$COW_FILE" ]; then
 	cowsay -f "$COW_FILE" $WORD_WRAP "$MESSAGE"
 else
-	a=(cows/*)
-	I_CHOOSE=${a[$((RANDOM % ${#a[@]}))]}
+	I_CHOOSE=$(find cows/ -type f -iname *.cow | shuf -n 1)
 	I_CHOOSE=${I_CHOOSE#cows/}
 	I_CHOOSE=${I_CHOOSE%.cow}
 	cowsay -f $PWD/cows/$I_CHOOSE.cow $WORD_WRAP "$MESSAGE"

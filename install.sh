@@ -11,7 +11,7 @@ mkdir -p $install_path/cows/
 mkdir -p $bin_path/
 
 # Copy the cows and the main script to the install path.
-cp ./cows/*.cow $install_path/cows/
+cp -R ./cows $install_path/
 cp ./pokemonsay.sh $install_path/
 
 # Create the pokemonsay script in the home bin directory.
