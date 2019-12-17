@@ -2,9 +2,15 @@
 
 Performant-Pokémon!
 
-> Lovingly forked from <https://github.com/possatti/pokemonsay>
+> Lovingly inspired by, and originally forked from <https://github.com/possatti/pokemonsay>
 
-==========
+## Mission Statement
+
+- [ ] This must be run via Bash/shell scripts, and piggyback `cowsay`. Nobody wants to install weird dependencies to run this.
+- [ ] This must be as fast as possible.
+- [ ] There must be some nice options to control which pokemon you select
+
+---
 
 ![You should try pokemonsay!](example.png)
 
