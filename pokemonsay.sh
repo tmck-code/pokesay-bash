@@ -60,8 +60,8 @@ MESSAGE="${1}"
 # TODO: restore cowthink after fine-tuning cowsay
 if [ -n "$I_CHOOSE" ]; then
 	cowsay -f "$PWD/cows/$I_CHOOSE.cow" $WORD_WRAP "$MESSAGE"
-elif [ -n "$COW_FILE" ]; then
-	cowsay -f "$COW_FILE" $WORD_WRAP "$MESSAGE"
+elif [ -n "$COWFILE" ]; then
+	cowsay -f "$COWFILE" $WORD_WRAP "$MESSAGE"
 else
 	INDEX=$[ $RANDOM % $N_POKEMON ]
 	I_CHOOSE=$(find cows/ -type f -iname *.cow | head -n $INDEX | tail -n 1)
