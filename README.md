@@ -52,24 +52,11 @@ You get a cowthink-like version too. Try it:
 $ pokemonthink --pokemon Charmander "Should I wear some clothes?"
 ```
 
-## Uninstall
-
-Just in case you hate Pokémon and you've installed `pokemonsay` "by mistake"... 
-Humpf! You can uninstall it by running:
-
-```bash
-$ sh $HOME/.pokemonsay/uninstall.sh
-```
-
-
-And there it is. Now install it with `install.sh` and you are done.
-
 ## Development
 
 If you want to rebuild everything in the repository, you will also need 
 [`img2xterm`][img2xterm], which is used to generate ".cow files" from the pokémon 
 images.
-
 
 ## NOTICE
 
