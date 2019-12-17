@@ -11,9 +11,9 @@ mkdir -p $install_path/cows/
 mkdir -p $bin_path/
 
 # Copy the cows and the main script to the install path.
-N_POKEMON=$(find cows/ -type f -name *.cow | wc -l)
-echo "Copying $N_POKEMON Pokemon to install path '$install_path'"
-cp -R ./cows $install_path/
+tar xzf cows.tar.gz -C $install_path/
+N_POKEMON=$(find $install_path/ -type f -name *.cow | wc -l)
+echo "Copied $N_POKEMON Pokemon to install path '$install_path'"
 cp ./pokemonsay.sh $install_path/
 
 # Create the pokemonsay script in the home bin directory.
