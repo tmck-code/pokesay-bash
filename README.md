@@ -54,9 +54,15 @@ $ pokemonthink --pokemon Charmander "Should I wear some clothes?"
 
 ## Development
 
-If you want to rebuild everything in the repository, you will also need 
-[`img2xterm`][img2xterm], which is used to generate ".cow files" from the pokémon 
-images.
+
+If you want to rebuild everything in the repository, you will need to run the
+Makefile command
+
+```
+make build
+```
+This will produce a `cows/` directory which will contain all of the sprites from
+pokesprite, transformed from PNG to cowfile, ready for use.
 
 ## NOTICE
 
