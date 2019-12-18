@@ -11,7 +11,9 @@ mkdir -p $install_path/cows/
 mkdir -p $bin_path/
 
 # Copy the cows and the main script to the install path.
-cp ./cows/*.cow $install_path/cows/
+tar xzf cows.tar.gz -C $install_path/
+N_POKEMON=$(find $install_path/ -type f -name *.cow | wc -l)
+echo "Copied $N_POKEMON Pokemon to install path '$install_path'"
 cp ./pokemonsay.sh $install_path/
 
 # Create the pokemonsay script in the home bin directory.
@@ -27,30 +29,12 @@ cat > $bin_path/$pokemonsay_bin <<- EOF
 	cd - >/dev/null
 EOF
 
-# Create uninstall script in the install directory
-cat > $install_path/uninstall.sh <<- EOF
-	#!/bin/sh
-
-	#
-	# This script uninstalls pokemonsay.
-	#
-
-	# Remove the install directory
-	rm -r "$install_path/"
-
-	# Remove the bin files
-	rm "$bin_path/$pokemonsay_bin"
-
-	# Say what's going on.
-	echo "'$install_path/' directory was removed."
-	echo "'$bin_path/$pokemonsay_bin' file was removed."
-EOF
-
 # Change permission of the generated scripts
 chmod +x "$bin_path/$pokemonsay_bin"
-chmod +x "$install_path/uninstall.sh"
 
-echo "The files were installed to '$install_path/'."
-echo "A '$pokemonsay_bin' script was created in '$bin_path/'."
-echo "A uninstall script was created in '$install_path/'."
-echo "It may be necessary to logout and login back again in order to have the '$pokemonsay_bin' available in your path."
+echo "\
+- The files were installed to '$install_path/'.
+- A '$pokemonsay_bin' script was created in '$bin_path/'.
+- A uninstall script was created in '$install_path/'.
+It may be necessary to logout and login back again in order to have the '$pokemonsay_bin' available in your path.
+"

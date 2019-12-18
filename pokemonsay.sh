@@ -1,5 +1,7 @@
 #!/bin/bash
 
+N_POKEMON=3380
+
 usage() {
   echo "
   Description: Prints a Pokémon with a message.
@@ -40,13 +42,13 @@ WORD_WRAP="-n"
 
 while getopts ":p:f:wnNlh" Option ; do
 	case $Option in
-		f ) COWFILE="$OPTARG" ;;
-		p ) I_CHOOSE="$OPTARG" ;;
+		f ) COWFILE="$OPTARG"      ;;
+		p ) I_CHOOSE="$OPTARG"     ;;
 		w ) WORD_WRAP="-W $OPTARG" ;;
-		n ) DISABLE_WRAP=true   ;;
-		N ) DISABLE_NAME=true   ;;
-		l ) list_pokemon        ;;
-		h ) usage               ;;
+		n ) DISABLE_WRAP=true      ;;
+		N ) DISABLE_NAME=true      ;;
+		l ) list_pokemon           ;;
+		h ) usage                  ;;
 		* ) echo "Unimplemented option chosen." && usage ;;
 	esac
 done
@@ -58,11 +60,11 @@ MESSAGE="${1}"
 # TODO: restore cowthink after fine-tuning cowsay
 if [ -n "$I_CHOOSE" ]; then
 	cowsay -f "$PWD/cows/$I_CHOOSE.cow" $WORD_WRAP "$MESSAGE"
-elif [ -n "$COW_FILE" ]; then
-	cowsay -f "$COW_FILE" $WORD_WRAP "$MESSAGE"
+elif [ -n "$COWFILE" ]; then
+	cowsay -f "$COWFILE" $WORD_WRAP "$MESSAGE"
 else
-	a=(cows/*)
-	I_CHOOSE=${a[$((RANDOM % ${#a[@]}))]}
+	INDEX=$[ $RANDOM % $N_POKEMON ]
+	I_CHOOSE=$(find cows/ -type f -iname *.cow | head -n $INDEX | tail -n 1)
 	I_CHOOSE=${I_CHOOSE#cows/}
 	I_CHOOSE=${I_CHOOSE%.cow}
 	cowsay -f $PWD/cows/$I_CHOOSE.cow $WORD_WRAP "$MESSAGE"
