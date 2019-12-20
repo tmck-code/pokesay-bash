@@ -51,14 +51,7 @@ $ fortune | pokemonsay
 
 And if you really like it, you can add the command above to the end of your `~/.bashrc` file (or equivalent). So you will have a random pokémon speaking to you whenever you open a new terminal window! :D
 
-You get a cowthink-like version too. Try it:
-
-```bash
-$ pokemonthink --pokemon Charmander "Should I wear some clothes?"
-```
-
 ## Development
-
 
 If you want to rebuild everything in the repository, you will need to run the
 Makefile command
@@ -66,6 +59,7 @@ Makefile command
 ```
 make build
 ```
+
 This will produce a `cows/` directory which will contain all of the sprites from
 pokesprite, transformed from PNG to cowfile, ready for use.
 
