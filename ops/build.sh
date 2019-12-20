@@ -8,6 +8,6 @@ sprites="$(find ${idir} -type f -name *.png)"
 find ${idir} -type d | parallel -I {} mkdir -p "${odir}/{}"
 
 for f in $(echo "${sprites}"); do
-  img2xterm "${f}" > "${odir}/${f%.png}.cow"
+  img2xterm -c "${f}" | sed '/^[[:space:]]*$/d' > "${odir}/${f%.png}.cow"
 done
 
