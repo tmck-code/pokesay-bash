@@ -21,8 +21,6 @@ usage() {
       List all the Pokémon available.
     -N, --no-name
       Do not print the name of the Pokémon.
-    -t, --think
-      Make the Pokémon think the message instead of saying it.
     -h, --help
       Display this usage message.
     message
@@ -32,13 +30,14 @@ usage() {
 }
 
 list_pokemon() {
-	echo "Pokémon available in '$POKEMON/':"
-	ls -1 $HOME/.pokemonsay/cows/ | sed 's/\.cow$//g'
+	echo "Pokémon available in $HOME/.pokemonsay/cows/ :"
+	find $HOME/.pokemonsay/cows/ -type f -name *.cow
 	exit 0
 }
 
 # Disable wrapping by default
 WORD_WRAP="-n"
+DISABLE_NAME=false
 
 while getopts ":p:f:wnNlh" Option ; do
 	case $Option in
@@ -59,17 +58,18 @@ MESSAGE="${1}"
 # Define which pokemon should be displayed, then call cowsay or cowthink
 # TODO: restore cowthink after fine-tuning cowsay
 if [ -n "$I_CHOOSE" ]; then
-	cowsay -f "$HOME/.pokemonsay/cows/$I_CHOOSE.cow" $WORD_WRAP "$MESSAGE"
+	fpath=$(find $HOME/.pokemonsay/cows/ -type f -iname "$I_CHOOSE.cow")
+	cowsay -f "$fpath" $WORD_WRAP "$MESSAGE"
 elif [ -n "$COWFILE" ]; then
 	cowsay -f "$COWFILE" $WORD_WRAP "$MESSAGE"
 else
 	INDEX=$[ $RANDOM % $N_POKEMON ]
-	I_CHOOSE=$(find $HOME/.pokemonsay/cows/ -type f -iname *.cow | head -n $INDEX | tail -n 1)
-	I_CHOOSE=${I_CHOOSE#cows/}
+	I_CHOOSE_FPATH=$(find $HOME/.pokemonsay/cows/ -type f -iname *.cow | head -n $INDEX | tail -n 1)
+	I_CHOOSE=${I_CHOOSE_FPATH#.*/}
 	I_CHOOSE=${I_CHOOSE%.cow}
-	cowsay -f "$HOME/.pokemonsay/cows/$I_CHOOSE.cow" $WORD_WRAP "$MESSAGE"
+	cowsay -f "$I_CHOOSE_FPATH" $WORD_WRAP "$MESSAGE"
 fi
 
 # Write the pokemon name, unless requested otherwise.
-[ -n "$DISABLE_NAME" ] && echo $I_CHOOSE
+$DISABLE_NAME || echo $I_CHOOSE
 
