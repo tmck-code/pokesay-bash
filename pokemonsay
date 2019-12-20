@@ -33,7 +33,7 @@ usage() {
 
 list_pokemon() {
 	echo "Pokémon available in '$POKEMON/':"
-	ls -1 ./cows/ | sed 's/\.cow$//g'
+	ls -1 $HOME/.pokemonsay/cows/ | sed 's/\.cow$//g'
 	exit 0
 }
 
@@ -59,15 +59,15 @@ MESSAGE="${1}"
 # Define which pokemon should be displayed, then call cowsay or cowthink
 # TODO: restore cowthink after fine-tuning cowsay
 if [ -n "$I_CHOOSE" ]; then
-	cowsay -f "$PWD/cows/$I_CHOOSE.cow" $WORD_WRAP "$MESSAGE"
+	cowsay -f "$HOME/.pokemonsay/cows/$I_CHOOSE.cow" $WORD_WRAP "$MESSAGE"
 elif [ -n "$COWFILE" ]; then
 	cowsay -f "$COWFILE" $WORD_WRAP "$MESSAGE"
 else
 	INDEX=$[ $RANDOM % $N_POKEMON ]
-	I_CHOOSE=$(find cows/ -type f -iname *.cow | head -n $INDEX | tail -n 1)
+	I_CHOOSE=$(find $HOME/.pokemonsay/cows/ -type f -iname *.cow | head -n $INDEX | tail -n 1)
 	I_CHOOSE=${I_CHOOSE#cows/}
 	I_CHOOSE=${I_CHOOSE%.cow}
-	cowsay -f $PWD/cows/$I_CHOOSE.cow $WORD_WRAP "$MESSAGE"
+	cowsay -f "$HOME/.pokemonsay/cows/$I_CHOOSE.cow" $WORD_WRAP "$MESSAGE"
 fi
 
 # Write the pokemon name, unless requested otherwise.
