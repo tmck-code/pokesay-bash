@@ -13,7 +13,7 @@ mkdir -p $bin_path/
 # Copy the cows and the main script to the install path.
 tar xzf cows.tar.gz -C $install_path/
 N_POKEMON=$(find $install_path/ -type f -name *.cow | wc -l)
-echo -e "\nCopied $N_POKEMON Pokémon to install path '$install_path'"
+echo "\nCopied $N_POKEMON Pokémon to install path '$install_path'"
 cp ./pokemonsay $bin_path/$pokemonsay_bin
 
 # Change permission of the generated scripts
