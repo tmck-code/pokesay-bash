@@ -2,6 +2,8 @@
 
 Performant-Pokémon!
 
+`pokemonsay` is like [`cowsay`][cowsay] but for pokémon only. Internally, `pokemonsay` still uses `cowsay`, but supplies and organises its own Pokemon cowsay files for cowsay to use.
+
 ## Mission Statement
 
 - [x] This must be run via Bash/shell scripts, and piggyback `cowsay`. Nobody wants to install weird dependencies to run this.
@@ -12,7 +14,6 @@ Performant-Pokémon!
 
 ![You should try pokemonsay!](example.png)
 
-`pokemonsay` is like [`cowsay`][cowsay] but for pokémon only. Internally, `pokemonsay` still uses `cowsay`, so you need it installed too.
 
 ## Installation
 
