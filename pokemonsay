@@ -31,7 +31,7 @@ usage() {
 
 list_pokemon() {
 	echo "Pokémon available in $HOME/.pokemonsay/cows/ :"
-	find $HOME/.pokemonsay/cows/ -type f -name *.cow
+	find $HOME/.pokemonsay/cows/ -iname "*.cow"
 	exit 0
 }
 
@@ -64,8 +64,8 @@ elif [ -n "$COWFILE" ]; then
 	cowsay -f "$COWFILE" $WORD_WRAP "$MESSAGE"
 else
 	INDEX=$[ $RANDOM % $N_POKEMON ]
-	I_CHOOSE_FPATH=$(find $HOME/.pokemonsay/cows/ -type f -iname *.cow | head -n $INDEX | tail -n 1)
-	I_CHOOSE=${I_CHOOSE_FPATH#.*/}
+	I_CHOOSE_FPATH=$(find $HOME/.pokemonsay/cows/ -type f -iname "*.cow" | head -n $INDEX | tail -n 1)
+	I_CHOOSE=$(basename $I_CHOOSE_FPATH)
 	I_CHOOSE=${I_CHOOSE%.cow}
 	cowsay -f "$I_CHOOSE_FPATH" $WORD_WRAP "$MESSAGE"
 fi
