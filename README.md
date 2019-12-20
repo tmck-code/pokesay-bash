@@ -4,15 +4,15 @@ Performant-Pokémon!
 
 ## Mission Statement
 
-- [ ] This must be run via Bash/shell scripts, and piggyback `cowsay`. Nobody wants to install weird dependencies to run this.
-- [ ] This must be as fast as possible.
+- [x] This must be run via Bash/shell scripts, and piggyback `cowsay`. Nobody wants to install weird dependencies to run this.
+- [x] This must be as fast as possible.
 - [ ] There must be some nice options to control which pokemon you select
 
 ---
 
 ![You should try pokemonsay!](example.png)
 
-`pokemonsay` is like [`cowsay`][cowsay] but for pokémon only. It was inspired by [`ponysay`][ponysay] (`cowsay` for ponies). Internally, `pokemonsay` still uses `cowsay`, so you need it installed too (`cowsay`... not `ponysay`).
+`pokemonsay` is like [`cowsay`][cowsay] but for pokémon only. Internally, `pokemonsay` still uses `cowsay`, so you need it installed too.
 
 ## Installation
 
@@ -23,9 +23,8 @@ This is available on most (all?) systems, and can be installed by commands like:
 | OS | command |
 |----|---------|
 | debian | `apt install cowsay` |
-| osx    | `brew tap possatti/possatti && brew install cowsay` |
+| osx    | `brew install cowsay` |
 | termux | `pkg install cowsay` |
-| linux | `git clone http://github.com/possatti/pokemonsay && cd pokemonsay && ./install.sh` |
 
 ### Installation via script
 
