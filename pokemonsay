@@ -36,7 +36,7 @@ list_pokemon() {
 }
 
 # Disable wrapping by default
-WORD_WRAP=""
+WORD_WRAP="-n"
 DISABLE_NAME=false
 
 while getopts ":p:f:wnNlh" Option ; do
@@ -44,14 +44,13 @@ while getopts ":p:f:wnNlh" Option ; do
 		f ) COWFILE="$OPTARG"      ;;
 		p ) I_CHOOSE="$OPTARG"     ;;
 		w ) WORD_WRAP="-W $OPTARG" ;;
-		n ) WORD_WRAP="-n"         ;;
+		n ) DISABLE_WRAP=true      ;;
 		N ) DISABLE_NAME=true      ;;
 		l ) list_pokemon           ;;
 		h ) usage                  ;;
 		* ) echo "Unimplemented option chosen." && usage ;;
 	esac
 done
-
 shift $(($OPTIND - 1))
 MESSAGE="${1}"
 
@@ -59,6 +58,10 @@ MESSAGE="${1}"
 # TODO: restore cowthink after fine-tuning cowsay
 if [ -n "$I_CHOOSE" ]; then
 	fpath=$(find $HOME/.pokemonsay/cows/ -type f -iname "$I_CHOOSE.cow")
+  if [ -z "${fpath:-}" ]; then
+    echo "Unable to find Pokémon matching name $I_CHOOSE.cow in $HOME/.pokemonsay/cows/"
+    exit 1
+  fi
 	cowsay -f "$fpath" $WORD_WRAP "$MESSAGE"
 elif [ -n "$COWFILE" ]; then
 	cowsay -f "$COWFILE" $WORD_WRAP "$MESSAGE"
