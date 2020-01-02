@@ -1,6 +1,6 @@
 #!/bin/bash
 
-N_POKEMON=3380
+N_POKEMON=1871
 
 usage() {
   echo "
