@@ -36,7 +36,7 @@ list_pokemon() {
 }
 
 # Disable wrapping by default
-WORD_WRAP="-n"
+WORD_WRAP=""
 DISABLE_NAME=false
 
 while getopts ":p:f:wnNlh" Option ; do
@@ -44,7 +44,7 @@ while getopts ":p:f:wnNlh" Option ; do
 		f ) COWFILE="$OPTARG"      ;;
 		p ) I_CHOOSE="$OPTARG"     ;;
 		w ) WORD_WRAP="-W $OPTARG" ;;
-		n ) DISABLE_WRAP=true      ;;
+		n ) WORD_WRAP="-n"         ;;
 		N ) DISABLE_NAME=true      ;;
 		l ) list_pokemon           ;;
 		h ) usage                  ;;
