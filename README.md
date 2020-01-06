@@ -8,7 +8,7 @@ Performant-Pokémon!
 
 - [x] This must be run via Bash/shell scripts, and piggyback `cowsay`. Nobody wants to install weird dependencies to run this.
 - [x] This must be as fast as possible.
-- [ ] There must be some nice options to control which pokemon you select
+- [x] There must be some nice options to control which pokemon you select
 
 ---
 
