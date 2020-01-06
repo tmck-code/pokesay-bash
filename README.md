@@ -12,7 +12,7 @@ Performant-Pokémon!
 
 ---
 
-![You should try pokemonsay!](example.png)
+![You should try pokemonsay!](examples/screenshot_1.jpg)
 
 
 ## Installation
