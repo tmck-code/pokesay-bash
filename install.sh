@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # Define install directories and names
-install_path="$HOME/.pokemonsay"
+pokemonsay_bin="ppokemonsay"
+install_path="$HOME/.${pokemonsay_bin}"
 bin_path="$HOME/bin"
-pokemonsay_bin="pokemonsay"
 
 # Make sure the directories exist
 mkdir -p $install_path/
@@ -13,11 +13,9 @@ mkdir -p $bin_path/
 # Copy the cows and the main script to the install path.
 tar xzf cows.tar.gz -C $install_path/
 N_POKEMON=$(find $install_path/ -type f -name *.cow | wc -l)
-echo "\nCopied $N_POKEMON Pokémon to install path '$install_path'"
-cp ./pokemonsay $bin_path/$pokemonsay_bin
-
-# Change permission of the generated scripts
+cp $pokemonsay_bin $bin_path/$pokemonsay_bin
 chmod +x "$bin_path/$pokemonsay_bin"
+echo "\nCopied $N_POKEMON Pokémon to install path '$install_path'"
 
 echo "\
 
