@@ -1,6 +1,7 @@
 #!/bin/bash
 
 N_POKEMON=1871
+POKEDEX_PATH=$HOME/.ppokemonsay/cows/
 
 usage() {
   echo "
@@ -30,8 +31,8 @@ usage() {
 }
 
 list_pokemon() {
-	echo "Pokémon available in $HOME/.pokemonsay/cows/ :"
-	find $HOME/.pokemonsay/cows/ -iname "*.cow"
+	echo "Pokémon available in $POKEDEX_PATH :"
+	find $POKEDEX_PATH -iname "*.cow"
 	exit 0
 }
 
@@ -57,9 +58,9 @@ MESSAGE="${1}"
 # Define which pokemon should be displayed, then call cowsay or cowthink
 # TODO: restore cowthink after fine-tuning cowsay
 if [ -n "$I_CHOOSE" ]; then
-	fpath=$(find $HOME/.pokemonsay/cows/ -type f -iname "$I_CHOOSE.cow")
+	fpath=$(find  -type f -iname "$I_CHOOSE.cow")
   if [ -z "${fpath:-}" ]; then
-    echo "Unable to find Pokémon matching name $I_CHOOSE.cow in $HOME/.pokemonsay/cows/"
+    echo "Unable to find Pokémon matching name $I_CHOOSE.cow in $POKEDEX_PATH"
     exit 1
   fi
 	cowsay -f "$fpath" $WORD_WRAP "$MESSAGE"
@@ -67,7 +68,7 @@ elif [ -n "$COWFILE" ]; then
 	cowsay -f "$COWFILE" $WORD_WRAP "$MESSAGE"
 else
 	INDEX=$[ $RANDOM % $N_POKEMON ]
-	I_CHOOSE_FPATH=$(find $HOME/.pokemonsay/cows/ -type f -iname "*.cow" | head -n $INDEX | tail -n 1)
+	I_CHOOSE_FPATH=$(find $POKEDEX_PATH -type f -iname "*.cow" | head -n $INDEX | tail -n 1)
 	I_CHOOSE=$(basename $I_CHOOSE_FPATH)
 	I_CHOOSE=${I_CHOOSE%.cow}
 	cowsay -f "$I_CHOOSE_FPATH" $WORD_WRAP "$MESSAGE"
