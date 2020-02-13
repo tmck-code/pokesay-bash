@@ -10,6 +10,9 @@ mkdir -p $install_path/
 mkdir -p $install_path/cows/
 mkdir -p $bin_path/
 
+# Remove any previously installed cows
+rm -rf $install_path/cows/*
+
 # Copy the cows and the main script to the install path.
 tar xzf cows.tar.gz -C $install_path/
 N_POKEMON=$(find $install_path/ -type f -name *.cow | wc -l)
