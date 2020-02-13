@@ -1,6 +1,6 @@
 #!/bin/bash
 
-N_POKEMON=1871
+N_POKEMON=3229
 POKEDEX_PATH=$HOME/.ppokemonsay/cows/
 
 usage() {
