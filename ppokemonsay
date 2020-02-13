@@ -20,6 +20,8 @@ usage() {
       Do not wrap the message.
     -l, --list
       List all the Pokémon available.
+    -L, --list-categories
+      List all the Pokémon categories available.
     -N, --no-name
       Do not print the name of the Pokémon.
     -h, --help
@@ -31,8 +33,16 @@ usage() {
 }
 
 list_pokemon() {
-	echo "Pokémon available in $POKEDEX_PATH :"
-	find $POKEDEX_PATH -iname "*.cow"
+	echo -e "Pokémon available in ${POKEDEX_PATH}:\n"
+	find $POKEDEX_PATH -iname "*.cow" -printf '%f\n' | sed 's/\.cow$//g' | tr '\n' ' '
+  echo -e "\n"
+	exit 0
+}
+
+list_categories() {
+	echo -e "Pokémon categories available in ${POKEDEX_PATH}:\n"
+	find $POKEDEX_PATH/* -type d -printf '%f '
+  echo -e "\n"
 	exit 0
 }
 
@@ -40,7 +50,7 @@ list_pokemon() {
 WORD_WRAP=""
 DISABLE_NAME=false
 
-while getopts ":p:f:wnNlh" Option ; do
+while getopts ":p:f:wnNlLh" Option ; do
 	case $Option in
 		f ) COWFILE="$OPTARG"      ;;
 		p ) I_CHOOSE="$OPTARG"     ;;
@@ -48,6 +58,7 @@ while getopts ":p:f:wnNlh" Option ; do
 		n ) WORD_WRAP="-n"         ;;
 		N ) DISABLE_NAME=true      ;;
 		l ) list_pokemon           ;;
+    L ) list_categories        ;;
 		h ) usage                  ;;
 		* ) echo "Unimplemented option chosen." && usage ;;
 	esac
@@ -58,11 +69,13 @@ MESSAGE="${1}"
 # Define which pokemon should be displayed, then call cowsay or cowthink
 # TODO: restore cowthink after fine-tuning cowsay
 if [ -n "$I_CHOOSE" ]; then
-	fpath=$(find  -type f -iname "$I_CHOOSE.cow")
+	fpath=$(find $POKEDEX_PATH -type f -iname "$I_CHOOSE.cow" | sort -R | head -n 1)
   if [ -z "${fpath:-}" ]; then
     echo "Unable to find Pokémon matching name $I_CHOOSE.cow in $POKEDEX_PATH"
     exit 1
   fi
+  category="${fpath##*$POKEDEX_PATH}"
+  I_CHOOSE="${category%%.cow}"
 	cowsay -f "$fpath" $WORD_WRAP "$MESSAGE"
 elif [ -n "$COWFILE" ]; then
 	cowsay -f "$COWFILE" $WORD_WRAP "$MESSAGE"
