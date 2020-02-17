@@ -7,11 +7,13 @@ usage() {
   echo "
   Description: Prints a Pokémon with a message.
   Usage:
-	$(basename $0) [-p POKÉMON] [-f COWFILE] [-w COLUMN] [-lnNt] [-h] [MESSAGE]
+  $(basename $0) [-p POKÉMON] [-f COWFILE] [-w COLUMN] [-lnNt] [-h] [MESSAGE]
 
   Options:
     -p, --pokemon POKÉMON_NAME
       CHOOSE a Pokémon by name.
+    -c --category
+      Filter matching Pokémon by category.
     -f, --file COWFILE
       CHOOSE a Pokémon cowfile.
     -w, --word-wrap COLUMN
@@ -33,35 +35,36 @@ usage() {
 }
 
 list_pokemon() {
-	echo -e "Pokémon available in ${POKEDEX_PATH}:\n"
-	find $POKEDEX_PATH -iname "*.cow" -printf '%f\n' | sed 's/\.cow$//g' | tr '\n' ' '
+  echo -e "Pokémon available in ${POKEDEX_PATH}:\n"
+  find $POKEDEX_PATH -iname "*.cow" -printf '%f\n' | sed 's/\.cow$//g' | tr '\n' ' '
   echo -e "\n"
-	exit 0
+  exit 0
 }
 
 list_categories() {
-	echo -e "Pokémon categories available in ${POKEDEX_PATH}:\n"
-	find $POKEDEX_PATH/* -type d -printf '%f '
+  echo -e "Pokémon categories available in ${POKEDEX_PATH}:\n"
+  find $POKEDEX_PATH/* -type d -printf '%f '
   echo -e "\n"
-	exit 0
+  exit 0
 }
 
 # Disable wrapping by default
 WORD_WRAP=""
 DISABLE_NAME=false
 
-while getopts ":p:f:wnNlLh" Option ; do
-	case $Option in
-		f ) COWFILE="$OPTARG"      ;;
-		p ) I_CHOOSE="$OPTARG"     ;;
-		w ) WORD_WRAP="-W $OPTARG" ;;
-		n ) WORD_WRAP="-n"         ;;
-		N ) DISABLE_NAME=true      ;;
-		l ) list_pokemon           ;;
+while getopts ":p:f:wnNlLhc" Option ; do
+  case $Option in
+    l ) list_pokemon           ;;
     L ) list_categories        ;;
-		h ) usage                  ;;
-		* ) echo "Unimplemented option chosen." && usage ;;
-	esac
+    h ) usage                  ;;
+    f ) COWFILE="$OPTARG"      ;;
+    p ) I_CHOOSE="$OPTARG"     ;;
+    w ) WORD_WRAP="-W $OPTARG" ;;
+    n ) WORD_WRAP="-n"         ;;
+    N ) DISABLE_NAME=true      ;;
+    c ) CATEGORY="$OPTARG"     ;;
+    * ) echo "Unimplemented option chosen." && usage ;;
+  esac
 done
 shift $(($OPTIND - 1))
 MESSAGE="${1}"
@@ -69,22 +72,22 @@ MESSAGE="${1}"
 # Define which pokemon should be displayed, then call cowsay or cowthink
 # TODO: restore cowthink after fine-tuning cowsay
 if [ -n "$I_CHOOSE" ]; then
-	fpath=$(find $POKEDEX_PATH -type f -iname "$I_CHOOSE.cow" | sort -R | head -n 1)
+ fpath=$(find $POKEDEX_PATH -type f -iname "$I_CHOOSE.cow" | grep $CATEGORY | sort -R | head -n 1)
   if [ -z "${fpath:-}" ]; then
     echo "Unable to find Pokémon matching name $I_CHOOSE.cow in $POKEDEX_PATH"
     exit 1
   fi
   category="${fpath##*$POKEDEX_PATH}"
   I_CHOOSE="${category%%.cow}"
-	cowsay -f "$fpath" $WORD_WRAP "$MESSAGE"
+  cowsay -f "$fpath" $WORD_WRAP "$MESSAGE"
 elif [ -n "$COWFILE" ]; then
-	cowsay -f "$COWFILE" $WORD_WRAP "$MESSAGE"
+  cowsay -f "$COWFILE" $WORD_WRAP "$MESSAGE"
 else
-	INDEX=$[ $RANDOM % $N_POKEMON ]
-	I_CHOOSE_FPATH=$(find $POKEDEX_PATH -type f -iname "*.cow" | head -n $INDEX | tail -n 1)
-	I_CHOOSE=$(basename $I_CHOOSE_FPATH)
-	I_CHOOSE=${I_CHOOSE%.cow}
-	cowsay -f "$I_CHOOSE_FPATH" $WORD_WRAP "$MESSAGE"
+  INDEX=$[ $RANDOM % $N_POKEMON ]
+  I_CHOOSE_FPATH=$(find $POKEDEX_PATH -type f -iname "*.cow" | head -n $INDEX | tail -n 1)
+  I_CHOOSE=$(basename $I_CHOOSE_FPATH)
+  I_CHOOSE=${I_CHOOSE%.cow}
+  cowsay -f "$I_CHOOSE_FPATH" $WORD_WRAP "$MESSAGE"
 fi
 
 # Write the pokemon name, unless requested otherwise.
