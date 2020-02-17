@@ -72,7 +72,7 @@ MESSAGE="${1}"
 # Define which pokemon should be displayed, then call cowsay or cowthink
 # TODO: restore cowthink after fine-tuning cowsay
 if [ -n "$I_CHOOSE" ]; then
- fpath=$(find $POKEDEX_PATH -type f -iname "$I_CHOOSE.cow" | grep $CATEGORY | sort -R | head -n 1)
+	fpath=$(find $POKEDEX_PATH -type f -wholename "*$I_CHOOSE.cow" | sort -R | head -n 1)
   if [ -z "${fpath:-}" ]; then
     echo "Unable to find Pokémon matching name $I_CHOOSE.cow in $POKEDEX_PATH"
     exit 1
