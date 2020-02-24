@@ -89,6 +89,7 @@ if [ -z "${CATEGORY}" ] && [ -z "${I_CHOOSE}" ]; then
   if [ $[ $RANDOM % $CHANCE_OF_POKEMON ] == 0 ]; then
     CATEGORY=$(find_categories | grep -v pokemon | shuf -n 1)
   else
+    CATEGORY="pokemon"
     if [ $[ $RANDOM % $CHANCE_OF_SHINY ] == 0 ]; then
 
       print_message "\
@@ -98,18 +99,14 @@ That's
 * 1 / $CHANCE_OF_SHINY (chance of that pokemon being shiny)
 = 1 / $[ $CHANCE_OF_POKEMON * $CHANCE_OF_SHINY ]"
       CATEGORY="shiny"
-    else
-      CATEGORY="pokemon"
     fi
   fi
-
-  print_message "category is $CATEGORY"
 fi
 
 # Define which pokemon should be displayed, then call cowsay or cowthink
 # TODO: restore cowthink after fine-tuning cowsay
 if [ -n "$I_CHOOSE" ]; then
-	FPATHS=$(find $POKEDEX_PATH -type f -wholename "*$CATEGORY*/*$I_CHOOSE*.cow")
+	FPATHS=$(find $POKEDEX_PATH -type f -wholename "$POKEDEX_PATH*$CATEGORY*/*$I_CHOOSE*.cow")
 	FPATH=$(echo "$FPATHS" | shuf -n 1)
 
   if [ -z "${FPATH:-}" ]; then
@@ -120,7 +117,8 @@ if [ -n "$I_CHOOSE" ]; then
 
     print_message "\
 Randomly chose '$I_CHOOSE' ('$FPATH') from available cowfiles in POKEDEX_PATH ${POKEDEX_PATH}:
-$(echo "${FPATHS}" | sed "s,${POKEDEX_PATH},,g")"
+
+$(echo "${FPATHS}" | sed "s,${POKEDEX_PATH},,g" | tr "\n" " ")"
   fi
 
   category="$(dirname ${FPATH##*$POKEDEX_PATH})"
@@ -138,12 +136,13 @@ elif [ -n "$COWFILE" ]; then
 
   cowsay -f "$COWFILE" $WORD_WRAP "$MESSAGE"
 else
-  FPATHS=$(find $POKEDEX_PATH -type f -wholename "*$CATEGORY*/*.cow")
+  FPATHS=$(find $POKEDEX_PATH -type f -wholename "$POKEDEX_PATH*$CATEGORY*/*.cow")
   FPATH=$(echo "$FPATHS" | shuf -n 1)
 
   print_message "
 Randomly chose '$FPATH' from available paths for the '$CATEGORY' category:
-$FPATHS"
+
+$(echo "${FPATHS}" | sed "s,${POKEDEX_PATH},,g" | tr "\n" " ")"
 
   I_CHOOSE=$(basename $FPATH)
   I_CHOOSE=${I_CHOOSE%.cow}
@@ -152,8 +151,8 @@ $FPATHS"
 fi
 
 # Write the pokemon name, unless requested otherwise.
-$DISABLE_NAME || echo "\
-I choose ${I_CHOOSE}!"
+$DISABLE_NAME || echo -e "\
+\t${I_CHOOSE}\n"
 print_message "
 Category: $CATEGORY
 Cowfile:  $FPATH
