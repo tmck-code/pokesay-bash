@@ -2,17 +2,40 @@
 
 set -euo pipefail
 
-idir="${1}"
-odir="${2}"
-sprites="$(find ${idir} -type f -name *.png)"
-find ${idir} -type d | parallel -I {} mkdir -p "${odir}{}"
+IDIR="${1}"
+ODIR="${2}"
 
-mkdir -p /tmp/cows
-for f in $(echo "${sprites}"); do
-  ofpath="${odir}${f%.png}.cow"
+
+function generateCowfile() {
+  local worker_n="${1}"
+  local f="${2}"
+
+  local ofpath="${ODIR}${f%.png}.cow"
+  local local_path=${ofpath##*icons/}
+  local dir_path=$(dirname /tmp/cows/${local_path})
+
   img2xterm -c "${f}" | sed '/^[[:space:]]*$/d' | sed -E 's/^[[:space:]]{2,6}//g' > "${ofpath}"
-  local_path=${ofpath##*icons/}
-  mkdir -p "$(dirname /tmp/cows/${local_path})"
+
+  [ -d "${dir_path}" ] || mkdir -p "${dir_path}"
   mv ${ofpath} /tmp/cows/${local_path}
+  printf "%9s %s\n" "${worker_n}" "Generated cowfile: ${f}"
+}
+export -f generateCowfile
+
+find ${IDIR} -type d | parallel -I {} mkdir -p "${ODIR}{}"
+total=$(find ${IDIR} -type f -iname *.png | wc -l)
+
+i=0
+for f in $(find ${IDIR} -type f -name *.png); do
+  generateCowfile "${i}/${total}" "${f}" &
+  ((i=i+1))
 done
 
+echo "- Waiting for all jobs to finish..."
+wait
+
+echo "- Rearranging files"
+shopt -s extglob
+mv ${IDIR}/pokemon ${ODIR}/pokemon/
+mkdir ${ODIR}/items/
+mv ${IDIR}/!(items) ${ODIR}/items/
