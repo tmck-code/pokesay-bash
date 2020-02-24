@@ -56,7 +56,6 @@ list_categories() {
 
 # Helper function, echos a message based on the value of the -v/--verbose flag
 function print_message() {
-  echo "VERBOSE is $VERBOSE"
   [ "$VERBOSE" == "true" ]  && echo -e "$1"
 }
 
