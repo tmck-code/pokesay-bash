@@ -115,9 +115,9 @@ if [ -n "$I_CHOOSE" ]; then
   else
     I_CHOOSE="$(basename "${FPATH%%.cow}")"
 
-    print_message "
-Randomly chose '$I_CHOOSE' ('${FPATH##*$POKEDEX_PATH}') from $(echo "${FPATHS}" | wc -l) available cowfiles in ${POKEDEX_PATH}:
-"
+#     print_message "
+# Randomly chose '$I_CHOOSE' ('${FPATH##*$POKEDEX_PATH}') from $(echo "${FPATHS}" | wc -l) available cowfiles in ${POKEDEX_PATH}:
+# "
   fi
 
   category="$(dirname ${FPATH##*$POKEDEX_PATH})"
@@ -138,9 +138,9 @@ else
   FPATHS=$(find $POKEDEX_PATH -type f -wholename "$POKEDEX_PATH*$CATEGORY*/*.cow")
   FPATH=$(echo "$FPATHS" | shuf -n 1)
 
-  print_message "
-Randomly chose '${FPATH##*$POKEDEX_PATH}' from $(echo "${FPATHS}" | wc -l) available cowfiles for the '$CATEGORY' category
-"
+#   print_message "
+# Randomly chose '${FPATH##*$POKEDEX_PATH}' from $(echo "${FPATHS}" | wc -l) available cowfiles for the '$CATEGORY' category
+# "
 
   I_CHOOSE=$(basename $FPATH)
   I_CHOOSE=${I_CHOOSE%.cow}
@@ -150,9 +150,11 @@ fi
 
 # Write the pokemon name, unless requested otherwise.
 $DISABLE_NAME || echo -e "\
-\t${I_CHOOSE}\n"
-print_message "
-Category: $CATEGORY
-Cowfile:  $FPATH
+Pokémon:\t${I_CHOOSE}
+"
+
+print_message "\
+Category:\t$CATEGORY
+Cowfile:\t$FPATH
 "
 
