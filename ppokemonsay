@@ -26,6 +26,8 @@ usage() {
       List all the Pokémon categories available.
     -N, --no-name
       Do not print the name of the Pokémon.
+    -v, --verbose
+      Print information about how the Pokémon is chosen.
     -h, --help
       Display this usage message.
     message
@@ -37,22 +39,33 @@ usage() {
 list_pokemon() {
   echo -e "Pokémon available in ${POKEDEX_PATH}:\n"
   find $POKEDEX_PATH -iname "*.cow" -printf '%f\n' | sed 's/\.cow$//g' | tr '\n' ' '
-  echo -e "\n"
+  echo
   exit 0
+}
+
+find_categories() {
+  find $POKEDEX_PATH/* -type d | sed "s,${POKEDEX_PATH}/,,g"
 }
 
 list_categories() {
   echo -e "Pokémon categories available in ${POKEDEX_PATH}:\n"
-  find $POKEDEX_PATH/* -type d | sed "s,${POKEDEX_PATH}/,,g"
-  echo -e "\n"
+  find_categories
+  echo
   exit 0
 }
 
-# Disable wrapping by default
-WORD_WRAP=""
-DISABLE_NAME=false
+# Helper function, echos a message based on the value of the -v/--verbose flag
+function print_message() {
+  echo "VERBOSE is $VERBOSE"
+  [ "$VERBOSE" == "true" ]  && echo -e "$1"
+}
 
-while getopts ":p:f:c:wnNlLh" Option ; do
+# Default values
+WORD_WRAP=""       # Disable wrapping
+DISABLE_NAME=false # Print the pokemon name
+VERBOSE=false      # Non-verbose mode off
+
+while getopts ":p:f:c:wnNlLhv" Option ; do
   case $Option in
     l ) list_pokemon           ;;
     L ) list_categories        ;;
@@ -63,43 +76,87 @@ while getopts ":p:f:c:wnNlLh" Option ; do
     w ) WORD_WRAP="-W $OPTARG" ;;
     n ) WORD_WRAP="-n"         ;;
     N ) DISABLE_NAME=true      ;;
+    v ) VERBOSE=true           ;;
     * ) echo "Unimplemented option chosen." && usage ;;
   esac
 done
 shift $(($OPTIND - 1))
+
 MESSAGE="${1}"
-if [ -z "${CATEGORY}" ]; then
-  if [ $[ $RANDOM % 10 ] == 0 ]; then
-    CATEGORY=$(list_categories | grep -v pokemon | tail -n +3 | shuf | head -n 1)
+CHANCE_OF_POKEMON=2
+CHANCE_OF_SHINY=20
+
+if [ -z "${CATEGORY}" ] && [ -z "${I_CHOOSE}" ]; then
+  if [ $[ $RANDOM % $CHANCE_OF_POKEMON ] == 0 ]; then
+    CATEGORY=$(find_categories | grep -v pokemon | shuf -n 1)
   else
-    CATEGORY="pokemon"
+    if [ $[ $RANDOM % $CHANCE_OF_SHINY ] == 0 ]; then
+
+      print_message "\
+You got a shiny!
+That's
+  1 / $CHANCE_OF_POKEMON (chance of pokemon)
+* 1 / $CHANCE_OF_SHINY (chance of that pokemon being shiny)
+= 1 / $[ $CHANCE_OF_POKEMON * $CHANCE_OF_SHINY ]"
+      CATEGORY="shiny"
+    else
+      CATEGORY="pokemon"
+    fi
   fi
-  echo "category is $CATEGORY"
+
+  print_message "category is $CATEGORY"
 fi
 
 # Define which pokemon should be displayed, then call cowsay or cowthink
 # TODO: restore cowthink after fine-tuning cowsay
 if [ -n "$I_CHOOSE" ]; then
-	fpath=$(find $POKEDEX_PATH -type f -wholename "*$CATEGORY*/$I_CHOOSE.cow" | sort -R | head -n 1)
-  if [ -z "${fpath:-}" ]; then
-    echo "Unable to find Pokémon matching name $I_CHOOSE.cow in $POKEDEX_PATH"
+	FPATHS=$(find $POKEDEX_PATH -type f -wholename "*$CATEGORY*/*$I_CHOOSE*.cow")
+	FPATH=$(echo "$FPATHS" | shuf -n 1)
+
+  if [ -z "${FPATH:-}" ]; then
+    echo "Unable to find Pokémon matching name '$I_CHOOSE' and category '$CATEGORY' in $POKEDEX_PATH"
     exit 1
+  else
+    I_CHOOSE="$(basename "${FPATH%%.cow}")"
+
+    print_message "\
+Randomly chose '$I_CHOOSE' ('$FPATH') from available cowfiles in POKEDEX_PATH ${POKEDEX_PATH}:
+$(echo "${FPATHS}" | sed "s,${POKEDEX_PATH},,g")"
   fi
-  category="${fpath##*$POKEDEX_PATH}"
-  echo "category: $category, CATEGORY: $CATEGORY"
-  I_CHOOSE="${category%%.cow}"
-  cowsay -f "$fpath" $WORD_WRAP "$MESSAGE"
+
+  category="$(dirname ${FPATH##*$POKEDEX_PATH})"
+  if [ -n "$CATEGORY" ] && ! [[ "$category" =~ "$CATEGORY" ]]; then
+    echo "Pokémon category of $I_CHOOSE '$category' does not match chosen category '$CATEGORY'"
+    exit 1
+  else
+    CATEGORY="$category"
+    print_message "category: $CATEGORY"
+  fi
+
+  cowsay -f "$FPATH" $WORD_WRAP "$MESSAGE"
+
 elif [ -n "$COWFILE" ]; then
+
   cowsay -f "$COWFILE" $WORD_WRAP "$MESSAGE"
 else
-  INDEX=$[ $RANDOM % $N_POKEMON ]
-  FPATH=$(find $POKEDEX_PATH -type f -wholename "*$CATEGORY*/*.cow" | head -n $INDEX | tail -n 1)
+  FPATHS=$(find $POKEDEX_PATH -type f -wholename "*$CATEGORY*/*.cow")
+  FPATH=$(echo "$FPATHS" | shuf -n 1)
+
+  print_message "
+Randomly chose '$FPATH' from available paths for the '$CATEGORY' category:
+$FPATHS"
+
   I_CHOOSE=$(basename $FPATH)
   I_CHOOSE=${I_CHOOSE%.cow}
-  echo "i choose: $I_CHOOSE, CATEGORY: $CATEGORY"
+
   cowsay -f "$FPATH" $WORD_WRAP "$MESSAGE"
 fi
 
 # Write the pokemon name, unless requested otherwise.
-$DISABLE_NAME || echo $I_CHOOSE
+$DISABLE_NAME || echo "\
+I choose ${I_CHOOSE}!"
+print_message "
+Category: $CATEGORY
+Cowfile:  $FPATH
+"
 
