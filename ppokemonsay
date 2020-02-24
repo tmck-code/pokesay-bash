@@ -43,7 +43,7 @@ list_pokemon() {
 
 list_categories() {
   echo -e "Pokémon categories available in ${POKEDEX_PATH}:\n"
-  find $POKEDEX_PATH/* -type d -printf '%f '
+  find $POKEDEX_PATH/* -type d | sed "s,${POKEDEX_PATH}/,,g"
   echo -e "\n"
   exit 0
 }
@@ -68,6 +68,14 @@ while getopts ":p:f:c:wnNlLh" Option ; do
 done
 shift $(($OPTIND - 1))
 MESSAGE="${1}"
+if [ -z "${CATEGORY}" ]; then
+  if [ $[ $RANDOM % 10 ] == 0 ]; then
+    CATEGORY=$(list_categories | grep -v pokemon | tail -n +3 | shuf | head -n 1)
+  else
+    CATEGORY="pokemon"
+  fi
+  echo "category is $CATEGORY"
+fi
 
 # Define which pokemon should be displayed, then call cowsay or cowthink
 # TODO: restore cowthink after fine-tuning cowsay
