@@ -82,16 +82,17 @@ done
 shift $(($OPTIND - 1))
 
 MESSAGE="${1}"
-CHANCE_OF_POKEMON=2
+CHANCE_OF_ITEM=8
 CHANCE_OF_SHINY=20
 
 if [ -z "${CATEGORY}" ] && [ -z "${I_CHOOSE}" ]; then
-  if [ $[ $RANDOM % $CHANCE_OF_POKEMON ] == 0 ]; then
+  if [ $[ $RANDOM % $CHANCE_OF_ITEM ] == 0 ]; then
     CATEGORY=$(find_categories | grep -v pokemon | shuf -n 1)
   else
-    CATEGORY="pokemon"
     if [ $[ $RANDOM % $CHANCE_OF_SHINY ] == 0 ]; then
       CATEGORY="shiny"
+    else
+      CATEGORY="pokemon"
     fi
   fi
 fi
