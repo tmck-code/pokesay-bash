@@ -91,13 +91,6 @@ if [ -z "${CATEGORY}" ] && [ -z "${I_CHOOSE}" ]; then
   else
     CATEGORY="pokemon"
     if [ $[ $RANDOM % $CHANCE_OF_SHINY ] == 0 ]; then
-
-      print_message "\
-You got a shiny!
-That's
-  1 / $CHANCE_OF_POKEMON (chance of pokemon)
-* 1 / $CHANCE_OF_SHINY (chance of that pokemon being shiny)
-= 1 / $[ $CHANCE_OF_POKEMON * $CHANCE_OF_SHINY ]"
       CATEGORY="shiny"
     fi
   fi
