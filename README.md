@@ -2,7 +2,7 @@
 
 Performant-Pokémon!
 
-`pokemonsay` is like [`cowsay`][cowsay] but for pokémon only. Internally, `pokemonsay` still uses `cowsay`, but supplies and organises its own Pokemon cowsay files for cowsay to use.
+`ppokemonsay` is like [`cowsay`][cowsay] but for pokémon only. Internally, `ppokemonsay` still uses `cowsay`, but supplies and organises its own Pokemon cowsay files for cowsay to use.
 
 ## Mission Statement
 
@@ -12,7 +12,7 @@ Performant-Pokémon!
 
 ---
 
-![You should try pokemonsay!](examples/screenshot_1.jpg)
+![You should try ppokemonsay!](examples/screenshot_1.jpg)
 
 
 ## Installation
@@ -29,47 +29,52 @@ This is available on most (all?) systems, and can be installed by commands like:
 
 ### Installation via script
 
-Running `./install.sh` will install `pokemonsay` in you homer folder, under `~/.pokemonsay/`.
+Running `./install.sh` will install `ppokemonsay` in you homer folder, under `~/.ppokemonsay/`.
 
-An executable script will be created in `~/bin/pokemonsay`, so that you can have `pokemonsay` in your `$PATH` too.
+An executable script will be created in `~/bin/ppokemonsay`, so that you can have `ppokemonsay` in your `$PATH` too.
 
-It may be necessary to logout and login back again to have `pokemonsay` in your `$PATH`.
+It may be necessary to logout and login back again to have `ppokemonsay` in your `$PATH`.
+
+---
 
 ## Usage
 
-Now that you've installed `pokemonsay`, you can make it work like so:
+* Now that you've installed `ppokemonsay`, you can make it work like so:
 
-```bash
-$ pokemonsay Hello World
-```
+    ```bash
+    $ ppokemonsay Hello World
+    ```
 
-To have a random Pokémon say a random message, try using with `fortune`:
+* To have a random Pokémon say a random message, try using with `fortune`:
 
-```bash
-$ fortune | pokemonsay
-```
+    ```bash
+    $ fortune | ppokemonsay
+    ```
 
-And if you really like it, you can add the command above to the end of your `~/.bashrc` file (or equivalent). So you will have a random pokémon speaking to you whenever you open a new terminal window! :D
+* If you really like it, you can add the command above to the end of your `~/.bashrc` file (or equivalent). So you will have a random pokémon speaking to you whenever you open a new terminal window! :D
+
+* Pick a pokemon this is in the `'shiny'` category AND contains the substring `'chu'`
+
+    ```bash
+    ppokemonsay -c shiny -p chu 'yo'
+    ```
 
 ## Development
 
-If you want to rebuild everything in the repository, you will need to run the
-Makefile command
+If you want to rebuild (and install) everything in the repository, you will need to run the Makefile command
 
 ```
-make build
+make build install
 ```
 
-This will produce a `cows/` directory which will contain all of the sprites from
-pokesprite, transformed from PNG to cowfile, ready for use.
+This will produce a `cows/` directory which will contain all of the sprites from pokesprite, transformed from PNG to cowfile, ready for use.
 
 ## NOTICE
 
-Please notice I don't own Pokémon or anything related to it. Pokémon is property 
-of [The Pokémon Company][the-pokemon-company].
+Please notice I don't own Pokémon or anything related to it. Pokémon is property of [The Pokémon Company][the-pokemon-company].
 
-[pokemonsay]: https://github.com/possatti/pokemonsay
-[img2xterm]: https://github.com/rossy/img2xterm
-[cowsay]: https://en.wikipedia.org/wiki/Cowsay
-[the-pokemon-company]: https://en.wikipedia.org/wiki/The_Pok%C3%A9mon_Company
+* [ppokemonsay]: https://github.com/possatti/ppokemonsay
+* [img2xterm]: https://github.com/rossy/img2xterm
+* [cowsay]: https://en.wikipedia.org/wiki/Cowsay
+* [the-pokemon-company]: https://en.wikipedia.org/wiki/The_Pok%C3%A9mon_Company
 
