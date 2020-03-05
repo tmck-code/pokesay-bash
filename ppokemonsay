@@ -44,7 +44,7 @@ list_pokemon() {
 }
 
 find_categories() {
-  find $POKEDEX_PATH/* -type d | sed "s,${POKEDEX_PATH}/,,g"
+  find $POKEDEX_PATH/* -type d -printf '%f\n' | tr '\n' ' '
 }
 
 list_categories() {
