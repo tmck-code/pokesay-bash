@@ -1,7 +1,7 @@
 #!/bin/bash
 
 N_POKEMON=3229
-POKEDEX_PATH=$HOME/.ppokemonsay/cows/
+POKEDEX_PATH=$HOME/.pokesay/cows/
 
 usage() {
   echo "

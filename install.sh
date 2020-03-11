@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Define install directories and names
-pokemonsay_bin="ppokemonsay"
+pokemonsay_bin="pokesay"
 install_path="$HOME/.${pokemonsay_bin}"
 bin_path="$HOME/bin"
 
