@@ -25,5 +25,9 @@ echo "\
 - The files were installed to '$install_path/'.
 - A '$pokemonsay_bin' script was created in '$bin_path/'.
 
-It may be necessary to logout and login back again in order to have the '$pokemonsay_bin' available in your path.
+"$HOME/bin" must be in your \$PATH to be able to use pokesay, you can do this by running
+
+  echo 'export PATH=\$HOME/bin:\$PATH' >> \$HOME/.bash_profile
+
+After starting a new terminal session you should have the '$pokemonsay_bin' available in your path.
 "
