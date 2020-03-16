@@ -29,9 +29,10 @@ This is available on most (all?) systems, and can be installed by commands like:
 
 ### Installation via script
 
-Running `./install.sh` will install `pokesay` in you homer folder, under `~/.pokesay/`.
+Running `./install.sh` will install `pokesay` in your home folder. It will be necessary to have something like `export PATH=$HOME/bin:$PATH` in your dotfiles so that you can just call `pokesay` to use it.
 
-An executable script will be created in `~/bin/pokesay`, so that you can have `pokesay` in your `$PATH` too.
+- The cowfiles under `~/.pokesay/`
+- The executable script at `~/bin/pokesay`
 
 It may be necessary to logout and login back again to have `pokesay` in your `$PATH`.
 
@@ -41,13 +42,13 @@ It may be necessary to logout and login back again to have `pokesay` in your `$P
 
 * Now that you've installed `pokesay`, you can make it work like so:
 
-    ```bash
+    ```shell
     $ pokesay Hello World
     ```
 
 * To have a random Pokémon say a random message, try using with `fortune`:
 
-    ```bash
+    ```shell
     $ fortune | pokesay
     ```
 
@@ -55,7 +56,7 @@ It may be necessary to logout and login back again to have `pokesay` in your `$P
 
 * Pick a pokemon this is in the `'shiny'` category AND contains the substring `'chu'`
 
-    ```bash
+    ```shell
     pokesay -c shiny -p chu 'yo'
     ```
 
