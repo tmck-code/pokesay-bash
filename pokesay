@@ -82,8 +82,8 @@ done
 shift $(($OPTIND - 1))
 
 MESSAGE="${1}"
-CHANCE_OF_ITEM=8
-CHANCE_OF_SHINY=20
+CHANCE_OF_ITEM="${CHANCE_OF_ITEM:-8}"
+CHANCE_OF_SHINY="${CHANCE_OF_SHINY:-20}"
 
 if [ -z "${CATEGORY}" ] && [ -z "${I_CHOOSE}" ]; then
   if [ $[ $RANDOM % $CHANCE_OF_ITEM ] == 0 ]; then
